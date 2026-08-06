@@ -1,0 +1,93 @@
+@baseUrl = http://localhost:3000
+
+### Hello
+GET {{baseUrl}}/
+
+### ----------------- LIBROS -----------------
+
+### Listar libros
+GET {{baseUrl}}/api/libros
+
+### Listar libros disponibles
+GET {{baseUrl}}/api/libros?disponible=true
+
+### Obtener un libro
+GET {{baseUrl}}/api/libros/1
+
+### Obtener libro que no existe (404)
+GET {{baseUrl}}/api/libros/999
+
+### Crear libro
+POST {{baseUrl}}/api/libros
+Content-Type: application/json
+
+{
+  "titulo": "Rayuela",
+  "autor": "Julio Cortázar",
+  "precio": 7000,
+  "imagen": "https://images.cdn1.buscalibre.com/fit-in/360x360/4c/32/4c321fa7abef1897d2e3076c8c41ecb2.jpg",
+  "disponible": true
+}
+
+### Actualizar libro
+PUT {{baseUrl}}/api/libros/1
+Content-Type: application/json
+
+{
+  "titulo": "El principito (Edición Especial)",
+  "autor": "Antoine de Saint-Exupéry",
+  "precio": 5000,
+  "imagen": "https://images.cdn1.buscalibre.com/fit-in/360x360/e8/35/e8354c3cf7b2b07e59f471e956bc5693.jpg",
+  "disponible": true
+}
+
+### Actualizar libro inexistente (404)
+PUT {{baseUrl}}/api/libros/999
+Content-Type: application/json
+
+{
+  "titulo": "No existo",
+  "autor": "Nadie",
+  "precio": 0,
+  "imagen": "",
+  "disponible": false
+}
+
+### Borrar libro
+DELETE {{baseUrl}}/api/libros/1
+
+### Borrar libro que ya no existe (404)
+DELETE {{baseUrl}}/api/libros/1
+
+
+### ----------------- AUTORES -----------------
+
+### Listar autores
+GET {{baseUrl}}/api/autores
+
+### Obtener autor
+GET {{baseUrl}}/api/autores/2
+
+### Obtener autor que no existe (404)
+GET {{baseUrl}}/api/autores/999
+
+### Crear autor
+POST {{baseUrl}}/api/autores
+Content-Type: application/json
+
+{
+  "nombre": "Julio Cortázar",
+  "nacionalidad": "Argentina"
+}
+
+### Actualizar autor
+PUT {{baseUrl}}/api/autores/1
+Content-Type: application/json
+
+{
+  "nombre": "Antoine de Saint-Exupéry",
+  "nacionalidad": "Francesa/Mundial"
+}
+
+### Borrar autor
+DELETE {{baseUrl}}/api/autores/2
