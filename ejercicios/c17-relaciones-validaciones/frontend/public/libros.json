@@ -1,0 +1,5 @@
+[
+  { "id": 1, "titulo": "El Aleph", "autor": "Jorge Luis Borges", "precio": 15000, "disponible": true },
+  { "id": 2, "titulo": "Rayuela", "autor": "Julio Cortázar", "precio": 18000, "disponible": true },
+  { "id": 3, "titulo": "Ficciones", "autor": "Jorge Luis Borges", "precio": 14000, "disponible": false }
+]
