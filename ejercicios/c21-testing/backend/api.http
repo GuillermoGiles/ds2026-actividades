@@ -1,0 +1,207 @@
+﻿@baseUrl = http://localhost:3000
+
+### Hello
+GET {{baseUrl}}/
+
+### ----------------- LIBROS -----------------
+
+### Listar libros
+GET {{baseUrl}}/api/libros
+
+### Listar libros disponibles
+GET {{baseUrl}}/api/libros?disponible=true
+
+### Obtener un libro
+GET {{baseUrl}}/api/libros/1
+
+### Obtener libro que no existe (404)
+GET {{baseUrl}}/api/libros/999
+
+### Crear libro
+POST {{baseUrl}}/api/libros
+Content-Type: application/json
+
+{
+  "titulo": "Rayuela",
+  "autor": "Julio CortÃ¡zar",
+  "precio": 7000,
+  "imagen": "https://images.cdn1.buscalibre.com/fit-in/360x360/4c/32/4c321fa7abef1897d2e3076c8c41ecb2.jpg",
+  "disponible": true
+}
+
+### Actualizar libro
+PUT {{baseUrl}}/api/libros/1
+Content-Type: application/json
+
+{
+  "titulo": "El principito (EdiciÃ³n Especial)",
+  "autor": "Antoine de Saint-ExupÃ©ry",
+  "precio": 5000,
+  "imagen": "https://images.cdn1.buscalibre.com/fit-in/360x360/e8/35/e8354c3cf7b2b07e59f471e956bc5693.jpg",
+  "disponible": true
+}
+
+### Actualizar libro inexistente (404)
+PUT {{baseUrl}}/api/libros/999
+Content-Type: application/json
+
+{
+  "titulo": "No existo",
+  "autorId": 9999,
+  "precio": 0,
+  "imagen": "",
+  "disponible": false
+}
+
+### Borrar libro
+DELETE {{baseUrl}}/api/libros/1
+
+### Borrar libro que ya no existe (404)
+DELETE {{baseUrl}}/api/libros/1
+
+
+### ----------------- AUTORES -----------------
+
+### Listar autores
+GET {{baseUrl}}/api/autores
+
+### Obtener autor
+GET {{baseUrl}}/api/autores/2
+
+### Obtener autor que no existe (404)
+GET {{baseUrl}}/api/autores/999
+
+### Crear autor
+POST {{baseUrl}}/api/autores
+Content-Type: application/json
+
+{
+  "nombre": "Julio CortÃ¡zar",
+  "nacionalidad": "Argentina"
+}
+
+### Actualizar autor
+PUT {{baseUrl}}/api/autores/1
+Content-Type: application/json
+
+{
+  "nombre": "Antoine de Saint-ExupÃ©ry",
+  "nacionalidad": "Francesa/Mundial"
+}
+
+### Borrar autor
+DELETE {{baseUrl}}/api/autores/2
+
+### ----------------- ERRORES A PROPOSITO -----------------
+
+### 400 - sin título
+POST {{baseUrl}}/api/libros
+Content-Type: application/json
+
+{ "precio": 5000, "imagen": "https://...", "autorId": 1 }
+
+### 400 - id inválido
+GET {{baseUrl}}/api/libros/abc
+
+### 400 - el autor no existe (formato válido, dato imposible)
+POST {{baseUrl}}/api/libros
+Content-Type: application/json
+
+{ "titulo": "Huérfano", "precio": 5000, "imagen": "https://...", "autorId": 9999 }
+
+### 409 - autor duplicado
+POST {{baseUrl}}/api/autores
+Content-Type: application/json
+
+{ "nombre": "Gabriel García Márquez", "nacionalidad": "Colombia" }
+
+### 409 - borrar un autor con libros (onDelete: Restrict)
+DELETE {{baseUrl}}/api/autores/1
+
+### 404 - actualizar algo que no existe
+PUT {{baseUrl}}/api/libros/9999
+Content-Type: application/json
+
+{ "precio": 5000 }
+
+
+### REGISTRO EXITOSO
+POST http://localhost:3000/api/auth/registro
+Content-Type: application/json
+
+{"nombre": "Ana", "email": "ana@libreria.test", "password": "Libreria2026"}
+
+### REGISTRO MISMO EMAIL
+POST http://localhost:3000/api/auth/registro
+Content-Type: application/json
+
+{"nombre": "Ana", "email": "ana@libreria.test", "password": "Libreria2026"}
+
+### REGISTRO PASSWORD CORTA
+POST http://localhost:3000/api/auth/registro
+Content-Type: application/json
+
+{"nombre": "Ana", "email": "ana2@libreria.test", "password": "corta"}
+
+### LOGIN MAIL NO EXISTE
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{"email": "noexiste@libreria.test", "password": "Libreria2026"}
+
+### LOGIN PASSWORD MAL
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{"email": "ana@libreria.test", "password": "Libreria2026mal"}
+
+### LOGIN CORRECTO ADMIN
+# @name loginAdmin
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{"email": "admin@libreria.test", "password": "Admin1234"}
+
+###
+@tokenAdmin = {{loginAdmin.response.body.token}}
+
+### LOGIN CORRECTO CLIENTE
+# @name loginCliente
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{"email": "cliente@libreria.test", "password": "Cliente1234"}
+
+###
+@tokenCliente = {{loginCliente.response.body.token}}
+
+### GET YO SIN HEADER
+GET http://localhost:3000/api/auth/yo
+
+### GET YO CLIENTE
+GET http://localhost:3000/api/auth/yo
+Authorization: Bearer {{tokenCliente}}
+
+### POST LIBRO SIN HEADER
+POST http://localhost:3000/api/libros
+Content-Type: application/json
+
+{"titulo": "Nuevo", "precio": 100, "imagen": "x.jpg", "autorId": 1, "categorias": []}
+
+### POST LIBRO CLIENTE
+POST http://localhost:3000/api/libros
+Authorization: Bearer {{tokenCliente}}
+Content-Type: application/json
+
+{"titulo": "Nuevo", "precio": 100, "imagen": "x.jpg", "autorId": 1, "categorias": []}
+
+### POST LIBRO ADMIN
+POST http://localhost:3000/api/libros
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{"titulo": "Nuevo 2", "precio": 100, "imagen": "x.jpg", "autorId": 1, "categorias": []}
+
+### GET LIBROS SIN HEADER (PUBLICO)
+GET http://localhost:3000/api/libros
+
