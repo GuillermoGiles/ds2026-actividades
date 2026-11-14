@@ -7,8 +7,8 @@ El código no cambia: cambia dónde corre, quién la arranca, con qué variables
 
 | Servicio | URL |
 |---|---|
-| Frontend (Render › Static Site) | `https://<front>.onrender.com` |
-| Backend (Render › Web Service, Docker) | `https://<back>.onrender.com` |
+| Frontend (Render › Static Site) | https://libreria-guille.onrender.com |
+| Backend (Render › Web Service, Docker) | https://libreria-api-guille.onrender.com |
 | Base de datos | Neon (PostgreSQL), región AWS us-east-1 |
 
 > El back está en la capa gratuita: sin tráfico se duerme y el primer request tarda ~1 minuto. No es un error.
@@ -33,7 +33,7 @@ El código no cambia: cambia dónde corre, quién la arranca, con qué variables
 | `DATABASE_URL` | back | Postgres de Docker (`@db:5432`) | connection string **directa** de Neon, `?sslmode=require` | Neon |
 | `JWT_SECRET` | back | una de mentira | botón *Generate* | Render |
 | `FRONTEND_URL` | back | `http://localhost:5173` | URL exacta del Static Site, sin `/` final | yo |
-| `VITE_API_URL` | front | `http://localhost:3000/api` | `https://<back>.onrender.com/api` (queda embebida en el build) | yo |
+| `VITE_API_URL` | front | `http://localhost:3000/api` | `https://libreria-api-guille.onrender.com/api` (queda embebida en el build) | yo |
 
 `VITE_` = público: cualquiera la ve con F12. Ningún secreto va en el front.
 
@@ -43,7 +43,7 @@ El código no cambia: cambia dónde corre, quién la arranca, con qué variables
 2. **Render › Web Service** → repo `ds2026-actividades`, runtime Docker, root directory `ejercicios/c23-deploy/backend`, Dockerfile `./Dockerfile.prod`, branch `main`.
    Env: `DATABASE_URL`, `JWT_SECRET` (generado), `FRONTEND_URL=http://localhost:5173` (provisorio). Health check: `/`.
 3. **Render › Static Site** → root directory `ejercicios/c23-deploy/frontend`, build `npm ci && npm run build`, publish `dist`.
-   Env: `VITE_API_URL=https://<back>.onrender.com/api`. Redirects/Rewrites: `/*` → `/index.html`, **Rewrite** (sin esto, F5 en `/catalogo` da 404).
+   Env: `VITE_API_URL=https://libreria-api-guille.onrender.com/api`. Redirects/Rewrites: `/*` → `/index.html`, **Rewrite** (sin esto, F5 en `/catalogo` da 404).
 4. **Render › back** → cambiar `FRONTEND_URL` a la URL del front (cambiar una variable redeploya).
 5. **Seed** (una vez, desde mi compu, contra Neon):
    ```bash

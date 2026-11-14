@@ -8,7 +8,7 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Header />
-      {children}
+      <main>{children}</main>
       <Footer />
     </div>
   );

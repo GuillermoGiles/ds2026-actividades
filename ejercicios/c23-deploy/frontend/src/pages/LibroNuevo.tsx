@@ -46,8 +46,10 @@ export function LibroNuevo() {
   };
 
   return (
-    <Container className="py-4" style={{ maxWidth: 480 }}>
-      <h2>Nuevo libro</h2>
+    <Container className="section d-flex justify-content-center">
+      <div className="panel w-100" style={{ maxWidth: 520 }}>
+      <span className="eyebrow">Panel de administración</span>
+      <h1 className="mb-4">Nuevo libro</h1>
 
       {errorApi && <Alert variant="danger">{errorApi}</Alert>}
 
@@ -83,10 +85,11 @@ export function LibroNuevo() {
 
         <Form.Check className="mb-3" label="Disponible" {...register('disponible')} />
 
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" size="lg" className="w-100" disabled={isSubmitting}>
           {isSubmitting ? 'Guardando...' : 'Agregar libro'}
         </Button>
       </Form>
+      </div>
     </Container>
   );
 }

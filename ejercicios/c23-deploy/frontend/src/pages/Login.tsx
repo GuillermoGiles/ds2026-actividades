@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, Button, Container, Alert, Card } from 'react-bootstrap';
+import { Form, Button, Container, Alert } from 'react-bootstrap';
 import { loginSchema, type LoginFormData } from '../schemas/loginSchema';
 import { useAuth } from '../context/AuthContext';
 
@@ -32,32 +32,34 @@ export function Login() {
   };
 
   return (
-    <Container className="py-5 d-flex justify-content-center">
-      <Card style={{ width: '100%', maxWidth: 400 }} className="shadow-sm">
-        <Card.Body className="p-4">
-          <h2 className="text-center mb-4">Iniciar sesión</h2>
+    <Container className="section d-flex justify-content-center">
+      <div className="panel w-100" style={{ maxWidth: 420 }}>
+        <div className="text-center mb-4">
+          <span className="eyebrow">Bienvenido de nuevo</span>
+          <h1>Iniciar sesión</h1>
+          <p className="section-sub">Ingresá con tu cuenta de Mi Librería.</p>
+        </div>
 
-          {errorApi && <Alert variant="danger">{errorApi}</Alert>}
+        {errorApi && <Alert variant="danger">{errorApi}</Alert>}
 
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <Form.Group className="mb-3" controlId="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" {...register('email')} isInvalid={!!errors.email} />
-              <Form.Control.Feedback type="invalid">{errors.email?.message}</Form.Control.Feedback>
-            </Form.Group>
+        <Form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <Form.Group className="mb-3" controlId="email">
+            <Form.Label>Email</Form.Label>
+            <Form.Control type="email" placeholder="tu@email.com" {...register('email')} isInvalid={!!errors.email} />
+            <Form.Control.Feedback type="invalid">{errors.email?.message}</Form.Control.Feedback>
+          </Form.Group>
 
-            <Form.Group className="mb-4" controlId="password">
-              <Form.Label>Contraseña</Form.Label>
-              <Form.Control type="password" {...register('password')} isInvalid={!!errors.password} />
-              <Form.Control.Feedback type="invalid">{errors.password?.message}</Form.Control.Feedback>
-            </Form.Group>
+          <Form.Group className="mb-4" controlId="password">
+            <Form.Label>Contraseña</Form.Label>
+            <Form.Control type="password" placeholder="••••••••" {...register('password')} isInvalid={!!errors.password} />
+            <Form.Control.Feedback type="invalid">{errors.password?.message}</Form.Control.Feedback>
+          </Form.Group>
 
-            <Button type="submit" className="w-100" disabled={isSubmitting}>
-              {isSubmitting ? 'Ingresando...' : 'Ingresar'}
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
+          <Button type="submit" size="lg" className="w-100" disabled={isSubmitting}>
+            {isSubmitting ? 'Ingresando...' : 'Ingresar'}
+          </Button>
+        </Form>
+      </div>
     </Container>
   );
 }
